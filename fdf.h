@@ -3,12 +3,20 @@
 
 # include "./libft/libft.h"
 # include "./get_next_line/get_next_line.h"
-# include "./minilibx-linux/mlx.h"
+# include "./minilibx_macos/mlx.h"
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
+# include <limits.h>
+
+# define WIDTH 1000
+# define HEIGHT 1000
+
+
+#define COLOR_LOW  0x0061  // Koyu Mavi
+#define COLOR_HIGH 0x00FFFF  // Açık Mavi
 
 
 typedef struct s_vector t_vector;
@@ -18,7 +26,7 @@ typedef struct s_vector
 	int x;
 	int y;
 	int z;
-
+    int color;
 } t_vector;
 
 typedef struct s_mlx
