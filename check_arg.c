@@ -187,15 +187,6 @@ float calculate_scale(int row, int col)
     return (scale_x < scale_y) ? scale_x : scale_y;
 }
 
-void calculate_offset(int row, int col, float scale, int *offset_x, int *offset_y)
-{
-    float map_width = col * scale;    // Haritanın genişliği
-    float map_height = row * scale;   // Haritanın yüksekliği
-
-    // Yatay ve dikey offset hesaplama (haritayı ekranın ortasına yerleştir)
-    *offset_x = (WIDTH - map_width) / 2;
-    *offset_y = (HEIGHT - map_height) / 2;
-}
 
  int	ft_atoi_base(const char *str, int base)
 {
@@ -275,9 +266,9 @@ t_vector	**read_map(char *filename, int row, int col, t_mlx *mlx)
 		while (values[t] && t < col)
 		{
             char **color_z = ft_split(values[t], ',');
-			map[k][t].x = t * scale ;// 20px aralıklarla yerleştir (örnek)
-			map[k][t].y = k * scale ;// Her satır için y değeri
-			map[k][t].z = ft_atoi(color_z[0]) * scale; // Haritadan okunan yükseklik
+			map[k][t].x = t ;// 20px aralıklarla yerleştir (örnek)
+			map[k][t].y = k ;// Her satır için y değeri
+			map[k][t].z = ft_atoi(color_z[0]); // Haritadan okunan yükseklik
 			if (color_z[1])
             {
                 map[k][t].color = ft_atoi_base(color_z[1], 16);
@@ -301,6 +292,7 @@ t_vector	**read_map(char *filename, int row, int col, t_mlx *mlx)
 	return (map);
 }
 
+
 void put_pixel_to_image(t_mlx *mlx, int x, int y, int color)
 {
     char *dst;
@@ -311,15 +303,14 @@ void put_pixel_to_image(t_mlx *mlx, int x, int y, int color)
     }
 }
 
-void isometric_projection(t_vector *p, float scale, float scale_z, int offset_x, int offset_y) 
+void isometric_projection(t_vector *p, float scale, float scale_z) 
 {
     int prev_x = p->x * scale;
     int prev_y = p->y * scale;
     int prev_z = p->z * scale_z; 
 
-    // Isometrik dönüşüm
-    p->x = (prev_x - prev_y) * cos(0.523599) + offset_x;
-    p->y = (prev_x + prev_y) * sin(0.523599) - prev_z + offset_y;
+    p->x = (prev_x - prev_y) * cos(0.523599);
+    p->y = (prev_x + prev_y) * sin(0.523599) - prev_z;
 }
 
 
@@ -398,9 +389,29 @@ t_mlx *grafic_method(char *filename)
     return my_mlx;
 }
 
-void center_map(t_vector **map, int row, int col, int offset_x, int offset_y)
+
+void center_map(t_vector **map, int row, int col)
 {
-    // Haritanın her noktasına offset değerini ekleyerek merkezleme işlemi
+    int min_x = INT_MAX, max_x = INT_MIN;
+    int min_y = INT_MAX, max_y = INT_MIN;
+
+    // Haritadaki en küçük ve en büyük X ve Y değerlerini bul
+    for (int y = 0; y < row; y++)
+    {
+        for (int x = 0; x < col; x++)
+        {
+            if (map[y][x].x < min_x) min_x = map[y][x].x;
+            if (map[y][x].x > max_x) max_x = map[y][x].x;
+            if (map[y][x].y < min_y) min_y = map[y][x].y;
+            if (map[y][x].y > max_y) max_y = map[y][x].y;
+        }
+    }
+
+    // Merkezleme için gerekli kaydırma miktarını hesapla
+    int offset_x = (WIDTH / 2) - ((max_x + min_x) / 2);
+    int offset_y = (HEIGHT / 2) - ((max_y + min_y) / 2);
+
+    // Haritadaki tüm noktaları kaydır
     for (int y = 0; y < row; y++)
     {
         for (int x = 0; x < col; x++)
@@ -411,27 +422,20 @@ void center_map(t_vector **map, int row, int col, int offset_x, int offset_y)
     }
 }
 
+
 void handle_projection(int row, int col, t_mlx *mlx)
 {
-    // Boyutlandırma faktörü (görüntü küçükse büyüt)
-    float scale = calculate_scale(row, col);  
+    float scale = calculate_scale(row, col);  // Boyutlandırma faktörü (görüntü küçükse büyüt)
     float scale_z = scale * 0.5; // Z ekseni ölçeği (yükseklik ayarı)
 
-    // Offset hesaplaması
-    int offset_x, offset_y;
-    calculate_offset(row, col, scale, &offset_x, &offset_y); // Offset hesapla
-
-    // Her nokta için isometrik projeksiyon ve offset uygula
     for (int y = 0; y < row; y++)
     {
         for (int x = 0; x < col; x++)
         {
-            // Projeksiyon hesaplama ve offset uygulama
-            isometric_projection(&mlx->mapper[y][x], scale, scale_z, offset_x, offset_y);
+            isometric_projection(&mlx->mapper[y][x], scale, scale_z);
         }
     }
-    // Haritayı merkezleme işlemi
-    center_map(mlx->mapper, row, col, offset_x, offset_y);
+    center_map(mlx->mapper, row, col);
 }
 
 void handle_bresenham(int row, int col, t_mlx *mlx)
