@@ -59,6 +59,7 @@ int	count_column(char *file_name)
 	int		fd;
 	int		count;
 	char	*one_line;
+    char    *line;
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
@@ -66,7 +67,8 @@ int	count_column(char *file_name)
 		perror("Error");
 		exit(1);
 	}
-	one_line = get_next_line(fd);
+	line = get_next_line(fd);
+    one_line = ft_strtrim(line, " \n");
 	if (!one_line)
 	{
 		close(fd);
@@ -311,7 +313,7 @@ int get_map_values(int fd, t_vector **map, int row, int col, t_mlx *mlx)
 {
     char *line = NULL;
     char *p = get_next_line(fd);
-    line = ft_strtrim(p, "\0");
+    line = ft_strtrim(p, " ");
     free(p);
     
     int k = 0;
@@ -322,7 +324,7 @@ int get_map_values(int fd, t_vector **map, int row, int col, t_mlx *mlx)
         process_line(line, k, map, mlx, col, &flag);
         free(line);
         p = get_next_line(fd);
-        line = ft_strtrim(p, "\0");
+        line = ft_strtrim(p, " ");
         free(p);
         k++;
     }
