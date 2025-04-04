@@ -13,13 +13,9 @@
 
 # define WIDTH 1000
 # define HEIGHT 1000
-
-
-#define COLOR_LOW  0x0061  // Koyu Mavi
-#define COLOR_HIGH 0x00FFFF  // Açık Mavi
-
-
-typedef struct s_vector t_vector;
+# define MARGINE 500
+# define COLOR_LOW  0x0061  // Koyu Mavi
+# define COLOR_HIGH 0x00FFFF  // Açık Mavi
 
 typedef struct s_vector
 {
@@ -28,6 +24,7 @@ typedef struct s_vector
 	int z;
     int color;
 } t_vector;
+
 
 typedef struct s_mlx
 {
@@ -38,7 +35,17 @@ typedef struct s_mlx
 	int			bpp;
 	int			size_line;
 	int			endian;
-	t_vector	**mapper; // x y z t_mlx -> vec -> x y z fjdndj(t_mlx, t_vector)
+	t_vector	**mapper;
+    int         map_width;
+    int         map_height;
+    int            scale;
+    int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+	int		error;
+	float	len;
+    
 }				t_mlx;
 
 int check_arg(char *argv);
@@ -47,6 +54,5 @@ int	ft_wordcount(char const *s, char c);
 int count_column(char *file_name);
 int	count_lines(char *filename);
 void rec_map_control(char *file_name);
-t_vector **read_map(char *filename, int width, int height, t_mlx *mlx);
 
 #endif

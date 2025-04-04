@@ -1,7 +1,7 @@
 NAME			= fdf
-CC				= cc 
+CC				= gcc 
 RM				= rm -rf
-FLAGS			= -Wall -Wextra -Werror
+FLAGS			= -Wall -Wextra -Werror -g
 MLX_FLAGS		= -Lminilibx_macos -lmlx -framework OpenGL -framework AppKit
 SRCS			= check_arg.c
 
