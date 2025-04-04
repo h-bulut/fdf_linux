@@ -69,6 +69,7 @@ int	count_column(char *file_name)
 	}
 	line = get_next_line(fd);
     one_line = ft_strtrim(line, " \n");
+	free(line);
 	if (!one_line)
 	{
 		close(fd);
@@ -105,6 +106,7 @@ void	rec_map_control(char *file_name)
 	char	*one_line;
 	int		k;
 	int		j;
+	int flag= 0;
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
@@ -122,18 +124,23 @@ void	rec_map_control(char *file_name)
 	while (one_line)
 	{
 		j = ft_wordcount(one_line, ' ');
-		if (j != k)
+		if(j != k)
 		{
-			printf("map problem\n");
-			free(one_line);
-			close(fd);
-			exit(1);
+			flag = 1;
 		}
 		free(one_line);
 		one_line = get_next_line(fd);
 	}
+	if (j != k)
+	{
+		printf("map problem\n");
+		free(one_line);
+		close(fd);
+		exit(1);
+	}
+	free(one_line);
 	close(fd);
-	printf("rectanguler and square map\n");
+	printf("rectangular and square map\n");
 }
 
 void free_trash(char **str)
@@ -292,7 +299,7 @@ void process_line(char *line, int k, t_vector **map, t_mlx *mlx, int col, int *f
     while (values[t] && t < col)
     {
         char **color_z = ft_split(values[t], ',');
-        map[k][t].x = t * mlx->scale + (MARGINE + mlx->map_height * mlx->scale + 70) / 2;
+        map[k][t].x = t * mlx->scale + (MARGINE + mlx->map_height * mlx->scale + 20) / 2;
         map[k][t].y = k * mlx->scale;
         map[k][t].z = ft_atoi(color_z[0]) * max(mlx->map_width / mlx->map_height, mlx->map_height / mlx->map_width);
         if (color_z[1])
@@ -348,16 +355,16 @@ t_vector **read_map(char *filename, int row, int col, t_mlx *mlx)
     t_vector **map = initialize_map(row, col);
     if (!map)
     {
-        close(fd);
+        close_and_free(map, row, fd);
         return (NULL);
     }
 
     int flag = get_map_values(fd, map, row, col, mlx);
     if (flag == 0)
         assign_colors(map, col, row);
-    mlx->mapper = map;
-    close(fd);
-    return (map);
+   // mlx->mapper = map;
+    close(fd); 
+   return (map);
 }
 
  //grandient
@@ -473,17 +480,20 @@ void handle_bresenham(int row, int col, t_mlx *mlx)
 
 //handle 
 
-int	close_window(t_mlx *mlx)
+int	close_window(t_mlx *mlx) //ekledim
 {
-	mlx_destroy_window(mlx->init_mlx, mlx->win);
-    mlx_destroy_image(mlx->init_mlx, mlx->img);
-	exit(1);
+	free_all(mlx);
+	exit(0);
+	return (0);
 }
 
 int	handle_key(int keycode, t_mlx *mlx)
 {
-	if (keycode == 53)
-		close_window(mlx);
+	if (keycode == 65307)
+	{
+		free_all(mlx);
+		exit(0);
+	}
 	return (0);
 }
 
@@ -493,9 +503,33 @@ t_mlx *grafic_method(char *filename)
     if (!my_mlx)
         return NULL;
     my_mlx->init_mlx = mlx_init();
+	if (!my_mlx->init_mlx) //ekledim
+    {
+        free(my_mlx);
+        return (NULL);
+    }
     my_mlx->win = mlx_new_window(my_mlx->init_mlx, WIDTH, HEIGHT, "wireframe");
+	if (!my_mlx->win)//ekledim
+    {
+        free(my_mlx);
+        return (NULL);
+    }
     my_mlx->img = mlx_new_image(my_mlx->init_mlx, WIDTH, HEIGHT);
+	if (!my_mlx->img) //ekledim
+    {
+        mlx_destroy_window(my_mlx->init_mlx, my_mlx->win);
+        free(my_mlx);
+        return (NULL);
+    }
     my_mlx->data_addr = mlx_get_data_addr(my_mlx->img, &my_mlx->bpp, &my_mlx->size_line, &my_mlx->endian);
+	if (!my_mlx->data_addr) //ekledim
+    {
+        mlx_destroy_image(my_mlx->init_mlx, my_mlx->img);
+        mlx_destroy_window(my_mlx->init_mlx, my_mlx->win);
+        free(my_mlx);
+        return (NULL);
+    }
+
     my_mlx->mapper = NULL;
     return my_mlx;
 }
@@ -525,6 +559,38 @@ void handle_projection(int row, int col, t_mlx *mlx)
     }
 }
 
+void	free_all(t_mlx *mlx)
+{
+	if (!mlx)
+		return;
+
+	if (mlx->img)
+	{
+		mlx_destroy_image(mlx->init_mlx, mlx->img);
+		//free(mlx->img);
+	}
+	if (mlx->win)
+	{
+		mlx_destroy_window(mlx->init_mlx, mlx->win);
+		//free(mlx->win);
+	}
+	if (mlx->mapper)
+	{
+		for (int i = 0; i < mlx->map_height; i++)
+			free(mlx->mapper[i]);
+		free(mlx->mapper);
+	}
+	if (mlx->init_mlx)
+	{
+		mlx_destroy_display(mlx->init_mlx);
+		free(mlx->init_mlx);
+		mlx->init_mlx = NULL;
+	}
+	free(mlx);
+}
+
+
+
 int	main(int argc, char **argv)
 {
     t_mlx	*my_mlx;
@@ -537,7 +603,12 @@ int	main(int argc, char **argv)
 	my_mlx->map_width = count_column(argv[1]);
 
     my_mlx->scale = (int)sqrt((WIDTH - MARGINE) * (HEIGHT - MARGINE) / (my_mlx->map_height * my_mlx->map_width));
-    read_map(argv[1], my_mlx->map_height, my_mlx->map_width, my_mlx);
+    my_mlx->mapper = read_map(argv[1], my_mlx->map_height, my_mlx->map_width, my_mlx);
+	if (!my_mlx->mapper)
+	{
+		free_all(my_mlx);
+		return (1);
+	}
 
     handle_projection(my_mlx->map_height, my_mlx->map_width, my_mlx);
     handle_bresenham(my_mlx->map_height, my_mlx->map_width,my_mlx); 
@@ -548,6 +619,7 @@ int	main(int argc, char **argv)
     mlx_hook(my_mlx->win, 17, 0, close_window, my_mlx);
 
     mlx_loop(my_mlx->init_mlx);
+	//free_all(my_mlx);
 
     return 0;
 }

@@ -2,7 +2,7 @@ NAME			= fdf
 CC				= cc 
 RM				= rm -rf
 FLAGS			= -Wall -Wextra -Werror
-MLX_FLAGS		= -Lminilibx_macos -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS = -Lminilibx_macos -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lbsd
 SRCS			= check_arg.c
 
 OBJ 			= $(SRCS:.c=.o)

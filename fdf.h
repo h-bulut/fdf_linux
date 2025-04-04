@@ -54,5 +54,6 @@ int	ft_wordcount(char const *s, char c);
 int count_column(char *file_name);
 int	count_lines(char *filename);
 void rec_map_control(char *file_name);
+void	free_all(t_mlx *mlx);
 
 #endif
