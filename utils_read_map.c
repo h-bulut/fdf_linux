@@ -24,11 +24,26 @@ t_vector	**initialize_map(int row, int col)
 	return (map);
 }
 
+void	free_trash2(char **arr)
+{
+	int i = 0;
+
+	if (!arr)
+		return;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 void	parse(char *value, t_vector *point, int k, int t, t_mlx *mlx, int *flag)
 {
 	int		z;
 	char	**color_z;
 
+	z= 0;
 	color_z = ft_split(value, ',');
 	if (!ft_atoi_strict(color_z[0], &z))
 		mlx->tag = 1;
@@ -59,7 +74,7 @@ void	process_line(char *line, int k, t_vector **map, t_mlx *mlx, int *flag)
 		parse(values[t], &map[k][t], k, t, mlx, flag);
 		t++;
 	}
-	free_trash(values);
+	free_trash2(values);
 }
 
 int	get_map_values(int fd, t_vector **map, t_mlx *mlx)
@@ -84,6 +99,7 @@ int	get_map_values(int fd, t_vector **map, t_mlx *mlx)
 		free(p);
 		k++;
 	}
+	free(line);
 	return (flag);
 }
 

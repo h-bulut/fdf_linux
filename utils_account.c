@@ -1,3 +1,4 @@
+
 #include "fdf.h"
 
 int	count_column(char *file_name)

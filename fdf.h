@@ -3,7 +3,7 @@
 
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
-# include "./minilibx/mlx.h"
+# include "./minilibx_macos/mlx.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>

@@ -3,7 +3,7 @@
 
 int	handle_key(int keycode, t_mlx *mlx)
 {
-	if (keycode == 53)
+	if (keycode == 65307)
 	{
 		free_all(mlx);
 		exit(0);

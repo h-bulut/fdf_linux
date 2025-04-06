@@ -73,7 +73,7 @@ void	free_all(t_mlx *mlx)
 	}
 	if (mlx->init_mlx)
 	{
-		// mlx_destroy_display(mlx->init_mlx);
+		mlx_destroy_display(mlx->init_mlx);
 		free(mlx->init_mlx);
 		mlx->init_mlx = NULL;
 	}
