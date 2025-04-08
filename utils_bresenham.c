@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_bresenham.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 22:37:33 by hbulut            #+#    #+#             */
+/*   Updated: 2025/04/08 22:37:34 by hbulut           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 float	distance(int x1, int y1, int x2, int y2)
@@ -55,8 +67,8 @@ void	bresenham(t_mlx *mlx, t_vector p1, t_vector p2)
 
 void	handle_bresenham(int row, int col, t_mlx *mlx)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < row)

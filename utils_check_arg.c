@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_check_arg.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 22:37:25 by hbulut            #+#    #+#             */
+/*   Updated: 2025/04/08 22:37:27 by hbulut           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	check_arg(char *argv)
@@ -36,44 +48,47 @@ int	check_file(int argc, char **argv)
 	return (0);
 }
 
+int	check_map_consistency(int fd)
+{
+	char	*line;
+	char	*trimmed;
+	int		expected;
+	int		current;
+
+	line = get_next_line(fd);
+	if (!line)
+		return (1);
+	trimmed = ft_strtrim(line, "\n");
+	expected = ft_wordcount(trimmed, ' ');
+	free(line);
+	free(trimmed);
+	while ((line = get_next_line(fd)))
+	{
+		trimmed = ft_strtrim(line, "\n");
+		current = ft_wordcount(trimmed, ' ');
+		free(line);
+		free(trimmed);
+		if (current != expected)
+			return (1);
+	}
+	return (0);
+}
 
 void	rec_map_control(char *file_name)
 {
-	int		fd;
-	char	*one_line;
-	int		k;
-	int		j;
-	int		rec;
+	int	fd;
 
-	rec = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("error");
 		exit(1);
 	}
-	one_line = get_next_line(fd);
-	if (!one_line)
+	if (check_map_consistency(fd))
 	{
+		ft_putstr_fd("map problem\n", 2);
 		close(fd);
 		exit(1);
 	}
-	k = ft_wordcount(one_line, ' ');
-	while (one_line)
-	{
-		j = ft_wordcount(one_line, ' ');
-		if (j != k)
-		{
-			rec = 1;
-		}
-		free(one_line);
-		one_line = get_next_line(fd);
-	}
-	free(one_line);
 	close(fd);
-	if (rec == 1)
-	{
-		ft_putstr_fd("map problem\n", 1);
-		exit(1);
-	}
 }

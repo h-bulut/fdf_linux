@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 22:16:41 by hbulut            #+#    #+#             */
+/*   Updated: 2025/04/08 22:24:56 by hbulut           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 int	main(int argc, char **argv)
@@ -12,7 +24,6 @@ int	main(int argc, char **argv)
 	my_mlx->scale = (int)sqrt((WIDTH - MARGINE) * (HEIGHT - MARGINE)
 			/ (my_mlx->map_height * my_mlx->map_width));
 	my_mlx->mapper = read_map(argv[1], my_mlx);
-	
 	if (!my_mlx->mapper)
 	{
 		free_all(my_mlx);

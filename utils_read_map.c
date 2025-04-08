@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_read_map.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 22:36:41 by hbulut            #+#    #+#             */
+/*   Updated: 2025/04/08 22:36:45 by hbulut           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 t_vector	**initialize_map(int row, int col)
@@ -24,23 +36,7 @@ t_vector	**initialize_map(int row, int col)
 	return (map);
 }
 
-// int	digit(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (str[0] == '-' || str[0] == '+')
-// 		i++;
-// 	while (str[i])
-// 	{
-// 		if (!ft_isdigit(str[i]))
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
-int 	parse(char *value, t_vector *point, int k, int t, t_mlx *mlx)
+int	parse(char *value, t_vector *point, int k, int t, t_mlx *mlx)
 {
 	int		z;
 	char	**color_z;
@@ -48,9 +44,11 @@ int 	parse(char *value, t_vector *point, int k, int t, t_mlx *mlx)
 	z = 0;
 	mlx->cod_error == -1;
 	color_z = ft_split(value, ',');
-	point->x = t * mlx->scale + (MARGINE + mlx->map_height * mlx->scale + 20) / 2;
+	point->x = t * mlx->scale + (MARGINE + mlx->map_height * mlx->scale + 20)
+		/ 2;
 	point->y = k * mlx->scale;
-	point->z = ft_atoi(color_z[0]) * max(mlx->map_width / mlx->map_height, mlx->map_height / mlx->map_width);
+	point->z = ft_atoi(color_z[0]) * max(mlx->map_width / mlx->map_height,
+			mlx->map_height / mlx->map_width);
 	if (color_z[1])
 	{
 		point->color = ft_atoi_base(color_z[1], 16);
@@ -122,5 +120,3 @@ t_vector	**read_map(char *filename, t_mlx *mlx)
 	close(fd);
 	return (mlx->mapper);
 }
-
-

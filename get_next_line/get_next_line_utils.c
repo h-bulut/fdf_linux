@@ -6,13 +6,13 @@
 /*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:20:33 by hbulut            #+#    #+#             */
-/*   Updated: 2025/03/21 16:41:53 by hbulut           ###   ########.fr       */
+/*   Updated: 2025/04/08 22:33:48 by hbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlenG(const char *s)
+size_t	ft_strlen_get(const char *s)
 {
 	size_t	i;
 
@@ -22,7 +22,7 @@ size_t	ft_strlenG(const char *s)
 	return (i);
 }
 
-int	ft_strchrG(const char *s)
+int	ft_strchr_get(const char *s)
 {
 	int	i;
 
@@ -38,7 +38,7 @@ int	ft_strchrG(const char *s)
 	return (0);
 }
 
-char	*ft_strjoinG(char *s1, char *s2)
+char	*ft_strjoin_get(char *s1, char *s2)
 {
 	char	*p;
 	size_t	m;

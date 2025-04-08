@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_account.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 22:16:51 by hbulut            #+#    #+#             */
+/*   Updated: 2025/04/08 22:35:48 by hbulut           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "fdf.h"
 
@@ -75,8 +86,8 @@ int	ft_wordcount(char const *s, char c)
 
 void	find_min_max(t_mlx *mlx)
 {
-	int 	y;
-	int 	x;
+	int	y;
+	int	x;
 
 	mlx->min_z = INT_MAX;
 	mlx->max_z = INT_MIN;

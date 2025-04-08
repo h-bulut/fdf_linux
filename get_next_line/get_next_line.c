@@ -6,7 +6,7 @@
 /*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:20:29 by hbulut            #+#    #+#             */
-/*   Updated: 2025/04/08 20:18:04 by hbulut           ###   ########.fr       */
+/*   Updated: 2025/04/08 22:34:27 by hbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_remainder(char *s1)
 		free(s1);
 		return (NULL);
 	}
-	s5 = malloc((ft_strlenG(s1) - i + 1) * sizeof(char));
+	s5 = malloc((ft_strlen_get(s1) - i + 1) * sizeof(char));
 	if (!s5)
 		return (NULL);
 	i++;
@@ -74,7 +74,7 @@ char	*ft_read(int fd, char *s1)
 	if (!s2)
 		return (NULL);
 	i = 1;
-	while (!ft_strchrG(s1) && i > 0)
+	while (!ft_strchr_get(s1) && i > 0)
 	{
 		i = read(fd, s2, BUFFER_SIZE);
 		if (i == -1)
@@ -84,7 +84,7 @@ char	*ft_read(int fd, char *s1)
 			return (NULL);
 		}
 		s2[i] = '\0';
-		s1 = ft_strjoinG(s1, s2);
+		s1 = ft_strjoin_get(s1, s2);
 	}
 	free(s2);
 	return (s1);
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 	if (fd == -42)
 	{
 		free(s1);
-		return(NULL);
+		return (NULL);
 	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
