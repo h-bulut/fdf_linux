@@ -12,6 +12,7 @@ int	main(int argc, char **argv)
 	my_mlx->scale = (int)sqrt((WIDTH - MARGINE) * (HEIGHT - MARGINE)
 			/ (my_mlx->map_height * my_mlx->map_width));
 	my_mlx->mapper = read_map(argv[1], my_mlx);
+	
 	if (!my_mlx->mapper)
 	{
 		free_all(my_mlx);

@@ -59,6 +59,8 @@ typedef struct s_mlx
 	float		len;
 
 	int			tag;
+	int			flag;
+	int			cod_error;
 
 	int			max_z;
 	int			min_z;
@@ -111,8 +113,7 @@ void			handle_projection(int row, int col, t_mlx *mlx);
 
 // utils_read_map.c
 t_vector		**initialize_map(int row, int col);
-void			process_line(char *line, int k, t_vector **map, t_mlx *mlx,
-					int *flag);
+void			process_line(char *line, int k, t_vector **map, t_mlx *mlx);
 int				get_map_values(int fd, t_vector **map, t_mlx *mlx);
 t_vector		**read_map(char *filename, t_mlx *mlx);
 

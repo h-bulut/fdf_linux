@@ -20,20 +20,19 @@ int	check_file(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		write(1, "no argument\n", 13);
+		ft_putstr_fd("no argument\n", 2);
 		exit(1);
 	}
 	else if (check_arg(argv[1]) == 0)
 	{
-		write(1, "false file\n", 12);
+		ft_putstr_fd("false file\n", 2);
 		exit(1);
 	}
 	else if (check_arg(argv[1]) == 2)
 	{
-		write(1, "ignore file\n", 13);
+		ft_putstr_fd("ignore file\n", 2);
 		exit(1);
 	}
-	write(1, "okey_file\n", 12);
 	return (0);
 }
 
@@ -44,9 +43,9 @@ void	rec_map_control(char *file_name)
 	char	*one_line;
 	int		k;
 	int		j;
-	int		flag;
+	int		rec;
 
-	flag = 0;
+	rec = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
@@ -65,19 +64,16 @@ void	rec_map_control(char *file_name)
 		j = ft_wordcount(one_line, ' ');
 		if (j != k)
 		{
-			flag = 1;
+			rec = 1;
 		}
 		free(one_line);
 		one_line = get_next_line(fd);
 	}
-	if (j != k)
-	{
-		printf("map problem\n");
-		free(one_line);
-		close(fd);
-		exit(1);
-	}
 	free(one_line);
 	close(fd);
-	printf("rectangular and square map\n");
+	if (rec == 1)
+	{
+		ft_putstr_fd("map problem\n", 1);
+		exit(1);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasretdenizbulut <hasretdenizbulut@stud    +#+  +:+       +#+        */
+/*   By: hbulut <hbulut@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:20:29 by hbulut            #+#    #+#             */
-/*   Updated: 2025/04/03 17:47:53 by hasretdeniz      ###   ########.fr       */
+/*   Updated: 2025/04/08 20:18:04 by hbulut           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,11 @@ char	*get_next_line(int fd)
 	static char	*s1;
 	char		*line;
 
+	if (fd == -42)
+	{
+		free(s1);
+		return(NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	s1 = ft_read(fd, s1);

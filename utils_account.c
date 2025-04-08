@@ -43,6 +43,7 @@ int	count_lines(char *filename)
 	{
 		lines++;
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (lines);
@@ -50,9 +51,9 @@ int	count_lines(char *filename)
 
 int	max(int a, int b)
 {
-	if (a > b)
+	if (a >= b)
 		return (a);
-	if (a < b)
+	else
 		return (b);
 }
 
@@ -74,12 +75,11 @@ int	ft_wordcount(char const *s, char c)
 
 void	find_min_max(t_mlx *mlx)
 {
-	int y ;
-	int x ;
+	int 	y;
+	int 	x;
 
 	mlx->min_z = INT_MAX;
 	mlx->max_z = INT_MIN;
-
 	y = 0;
 	while (y < mlx->map_height)
 	{

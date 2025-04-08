@@ -25,11 +25,11 @@ int	interpolate_color(int color1, int color2, float t)
 
 void	assign_colors(t_mlx *mlx)
 {
-	float	t = 0;
+	float	t;
 	int		y;
 	int		x;
 
-	find_min_max(mlx); 
+	find_min_max(mlx);
 	y = 0;
 	while (y < mlx->map_height)
 	{
