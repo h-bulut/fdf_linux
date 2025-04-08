@@ -24,6 +24,7 @@ t_vector	**initialize_map(int row, int col)
 	return (map);
 }
 
+
 void	free_trash2(char **arr)
 {
 	int i = 0;
@@ -43,7 +44,7 @@ void	parse(char *value, t_vector *point, int k, int t, t_mlx *mlx, int *flag)
 	int		z;
 	char	**color_z;
 
-	z= 0;
+	z = 0;
 	color_z = ft_split(value, ',');
 	if (!ft_atoi_strict(color_z[0], &z))
 		mlx->tag = 1;
@@ -107,6 +108,9 @@ t_vector	**read_map(char *filename, t_mlx *mlx)
 {
 	int	fd;
 	int	flag;
+
+	mlx->max_z = INT_MAX;
+	mlx->min_z = INT_MIN;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)

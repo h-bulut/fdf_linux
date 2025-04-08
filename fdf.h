@@ -3,7 +3,7 @@
 
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
-# include "./minilibx_macos/mlx.h"
+# include "./minilibx/mlx.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>
@@ -38,7 +38,6 @@ typedef struct s_grad
 
 typedef struct s_mlx
 {
-    //for mlx
 	void		*init_mlx;
 	void		*win;
 	void		*img;
@@ -47,13 +46,11 @@ typedef struct s_mlx
 	int			size_line;
 	int			endian;
 
-    //for map
 	t_vector	**mapper;
 	int			map_width;
 	int			map_height;
 	int			scale;
 
-    //for bresenham
 	int			dx;
 	int			dy;
 	int			sx;
@@ -61,10 +58,8 @@ typedef struct s_mlx
 	int			error;
 	float		len;
 
-    //for check control;
 	int			tag;
 
-    //for gradient;
 	int			max_z;
 	int			min_z;
 
